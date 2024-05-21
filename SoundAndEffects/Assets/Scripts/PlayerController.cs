@@ -8,20 +8,26 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRB;
     public float jumpforce;
     public float gravityModifier;
+    public bool isOnGround = true;
     // Start is called before the first frame update
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
-       Physics.gravity *= gravityModifier;
+        Physics.gravity *= gravityModifier;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             playerRB.AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
+            isOnGround = false;
         }
-        
+
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        isOnGround = true;
     }
 }
